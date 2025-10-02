@@ -1,0 +1,94 @@
+.navbar {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbarContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 24px;
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  justify-content: center;
+}
+
+.navLink {
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.navLink:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.navLinkActive {
+  color: #4caf50;
+  background: rgba(76, 175, 80, 0.1);
+  border-color: rgba(76, 175, 80, 0.3);
+  font-weight: 600;
+}
+
+.statusSection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .navbarContent {
+    padding: 8px 16px;
+    gap: 16px;
+  }
+
+  .navLinks {
+    gap: 4px;
+  }
+
+  .navLink {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .statusSection {
+    gap: 6px;
+  }
+}
+
+@media (max-width: 640px) {
+  .navLinks {
+    display: none;
+  }
+
+  .navbarContent {
+    justify-content: space-between;
+  }
+}

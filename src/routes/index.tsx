@@ -11,3 +11,6 @@ export const Route = createFileRoute("/")({
   validateSearch: zodValidator(searchParamsSchema),
   component: Overview,
 });
+export function Setup() {
+  return null;
+}

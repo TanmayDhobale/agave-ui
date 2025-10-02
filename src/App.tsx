@@ -3,15 +3,13 @@ import { Theme } from "@radix-ui/themes";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import "./app.css";
 import { routeTree } from "./routeTree.gen";
-import { ConnectionProvider } from "./api/ws/ConnectionProvider";
-import { getDefaultStore, useSetAtom } from "jotai";
-import { clientAtom, containerElAtom } from "./atoms";
+import { AgaveConnectionProvider } from "./api/ws/AgaveConnectionProvider";
+import { useSetAtom } from "jotai";
+import { containerElAtom } from "./atoms";
 import { useCallback } from "react";
 import * as colors from "./colors";
 import { kebabCase } from "lodash";
-import FiredancerLogo from "./assets/firedancer_logo.svg";
-import FrankendancerLogo from "./assets/frankendancer_logo.svg";
-import { ClientEnum } from "./api/entities";
+import AgaveLogo from "./assets/agave.png";
 
 const router = createRouter({ routeTree });
 
@@ -22,16 +20,9 @@ declare module "@tanstack/react-router" {
   }
 }
 
-// set up favicon and title based on client
-const store = getDefaultStore();
-const client = store.get(clientAtom);
-if (client === ClientEnum.Firedancer) {
-  document.getElementById("favicon")?.setAttribute("href", FiredancerLogo);
-  document.title = "Firedancer";
-} else {
-  document.getElementById("favicon")?.setAttribute("href", FrankendancerLogo);
-  document.title = "Frankendancer";
-}
+// set up favicon and title for Agave
+document.getElementById("favicon")?.setAttribute("href", AgaveLogo);
+document.title = "Agave Validator Dashboard";
 
 export default function App() {
   const setContainerEl = useSetAtom(containerElAtom);
@@ -53,9 +44,9 @@ export default function App() {
       ref={setRefAndColors}
       scaling="90%"
     >
-      <ConnectionProvider>
+      <AgaveConnectionProvider>
         <RouterProvider router={router} />
-      </ConnectionProvider>
+      </AgaveConnectionProvider>
     </Theme>
   );
 }

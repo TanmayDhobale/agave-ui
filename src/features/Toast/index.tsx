@@ -1,11 +1,10 @@
 import styles from "./toast.module.css";
 import { Text } from "@radix-ui/themes";
-import { SocketState } from "../../api/ws/types";
 import { useEffect, useState } from "react";
 import { useMount, usePrevious } from "react-use";
 import { animated, useSpring } from "@react-spring/web";
 import { useAtomValue } from "jotai";
-import { socketStateAtom } from "../../api/ws/atoms";
+import { agaveAgentStateAtom } from "../../api/agaveAtoms";
 
 const hiddenStyles = {
   opacity: 0,
@@ -17,22 +16,25 @@ const visibleStyles = {
   top: 18,
 };
 
-function getToastProps(state?: SocketState, previousState?: SocketState) {
-  if (!state) return;
+function getToastProps(connected?: boolean, previousConnected?: boolean) {
+  if (connected === undefined) return;
 
-  if (state === SocketState.Disconnected) {
-    return { className: styles.disconnected, text: "validator disconnected." };
+  if (!connected) {
+    return {
+      className: styles.disconnected,
+      text: "Agave agent disconnected.",
+    };
   }
-  if (state === SocketState.Connecting) {
-    return { className: styles.connecting, text: `validator connecting...` };
+  if (previousConnected === false && connected === true) {
+    return { className: styles.connecting, text: "Agave agent connected." };
   }
 
-  return getToastProps(previousState);
+  return getToastProps(previousConnected);
 }
 
 export default function Toast() {
-  const socketState = useAtomValue(socketStateAtom);
-  const prevSocketState = usePrevious(socketState);
+  const agaveState = useAtomValue(agaveAgentStateAtom);
+  const prevConnected = usePrevious(agaveState.connected);
 
   const [isInit, setIsInit] = useState(true);
 
@@ -47,17 +49,14 @@ export default function Toast() {
   useEffect(() => {
     if (isInit) return;
 
-    if (
-      socketState === SocketState.Connecting ||
-      socketState === SocketState.Disconnected
-    ) {
+    if (!agaveState.connected) {
       void api.start({ to: visibleStyles });
     } else {
       void api.start({ to: hiddenStyles });
     }
-  }, [api, isInit, socketState]);
+  }, [api, isInit, agaveState.connected]);
 
-  const props = getToastProps(socketState, prevSocketState);
+  const props = getToastProps(agaveState.connected, prevConnected);
   if (!props) return;
 
   return (

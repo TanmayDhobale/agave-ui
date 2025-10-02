@@ -20,5 +20,6 @@ export function useSlotSearchParam() {
     [navigate],
   );
 
-  return { selectedSlot: search?.slot, setSelectedSlot };
+  const selectedSlot = search && "slot" in search ? search.slot : undefined;
+  return { selectedSlot, setSelectedSlot };
 }
